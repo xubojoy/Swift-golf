@@ -11,6 +11,7 @@ import SwiftyJSON
 import HandyJSON
 import SDCycleScrollView
 import DynamicColor
+import FNMatchPull
 class HoleInOneController: BaseViewController {
     var bannerImgArray: [String] = [String]()
     var cycleScrollView = SDCycleScrollView()
@@ -42,6 +43,19 @@ class HoleInOneController: BaseViewController {
         requestBannerData()
         requestRankDetails()
         
+        let matchAnimator = FNMatchPullAnimator(frame: CGRect(x: 0, y: 0, width: screen_width, height: 80))
+        matchAnimator.text = "FNOZ"
+        matchAnimator.lineWidth = 4.0
+        matchAnimator.style = .text
+        self.tableView.addPullToRefreshWithAction({
+            //refresh action
+            OperationQueue().addOperation {
+                sleep(4)
+                OperationQueue.main.addOperation {
+                    self.tableView.stopPullToRefresh()
+                }
+            }
+        }, withAnimator: matchAnimator)
     }
     
     override func didReceiveMemoryWarning() {
@@ -73,19 +87,11 @@ extension HoleInOneController {
             } else {
                 let json = JSON(result as Any)
                 NSLog("-----积分榜------\(json)")
-//                let discoveryColumns = JSONDeserializer<HoleInOneUserPoint>.deserializeFrom(json: json["items"].description)
-                
-//                if (self.holeInOneUserPoint != nil) {
-//                    self.holeInOneUserPointArray.append(self.holeInOneUserPoint)
-//                }
-                
                 if let liveArray = JSONDeserializer<HoleInOneUserPoint>.deserializeModelArrayFrom(json: json["items"].description) {
                     self.holeInOneUserPointArray = liveArray as! [HoleInOneUserPoint]
                 }
-                
             }
             self.tableView.reloadData()
-
         }
         
     }
@@ -104,9 +110,6 @@ extension HoleInOneController {
                 for contentBlockItem in (discoveryColumns?.contentBlockItems)! {
 //                    NSLog("------图片地址-----\(contentBlockItem?.iconUrl)")
                     self.bannerImgArray.append(contentBlockItem?.iconUrl ?? "")
-                    //                    self.bannerImgArray?.append((contentBlockItem?.iconUrl)!)
-//                    NSLog("------图片地址-----\(self.bannerImgArray)")
-                    //                    print(self.bannerImgArray as Any)
                 }
             }
             self.tableView.reloadData()
@@ -126,11 +129,6 @@ extension HoleInOneController: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //        let cellIndetifier = "cellIndetifier"
-        //        var cell = tableView.dequeueReusableCell(withIdentifier: cellIndetifier)
-        //        if cell == nil {
-        //            cell = UITableViewCell(style: .default, reuseIdentifier: cellIndetifier)
-        //        }
         if indexPath.row == 0 {
             let cell = UITableViewCell()
             cell.backgroundColor = UIColor.cyan
@@ -159,8 +157,6 @@ extension HoleInOneController: UITableViewDelegate,UITableViewDataSource {
             
         }
         else{
-//            let cell = UITableViewCell()
-//            cell.backgroundColor = UIColor.cyan
             let cell = tableView.dequeueReusableCell(withIdentifier: "commonHoleRankCell", for: indexPath) as? CommonHoleRankCell
             cell?.backgroundColor = DynamicColor(hexString: common_bg_color)
             self.holeInOneUserPoint = self.holeInOneUserPointArray[indexPath.row-3]
