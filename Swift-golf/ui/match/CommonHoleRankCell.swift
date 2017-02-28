@@ -41,26 +41,20 @@ class CommonHoleRankCell: UITableViewCell {
     func renderCommonHoleRankCell(holeInOneUserPoint: HoleInOneUserPoint,row:NSInteger) {
         
         self.rankNumLabel.text = String.init(format: "%d", holeInOneUserPoint.orderInx)
-        let userImgUrl = NSURL.fileURL(withPath: (holeInOneUserPoint.user?.avatarUrl)!)
-        self.userAvatarIMageView.sd_setImage(with: userImgUrl, placeholderImage: #imageLiteral(resourceName: "user_icon"))
         
-//        .replacingCharacters(in: rangeStr, with: "****").replacingCharacters(in: rangeStr, with: "****")
+        self.userAvatarIMageView.sd_setImage(with: URL(string:(holeInOneUserPoint.user?.avatarUrl)!), placeholderImage: #imageLiteral(resourceName: "user_icon"))
+        
         let telNo = holeInOneUserPoint.user?.loginMobileNo
-        self.userPhoneLabel.text = telNo
+        
+        let leftStr = telNo?.substring(to: (telNo?.index((telNo?.startIndex)!, offsetBy: 3))!)
+        let rightStr = telNo?.substring(from: (telNo?.index((telNo?.endIndex)!, offsetBy: -4))!)
+        
+        let leftTmpStr = leftStr?.appending("****")
+        let rightTmpStr = leftTmpStr?.appending(rightStr!)
+    
+        self.userPhoneLabel.text = rightTmpStr
+        
         self.pointLabel.text = String.init(format: "%d 分", holeInOneUserPoint.pointCount)
-
-//        NSLog(@">>>>>>>>>>>>>%@",holeInOneUserPoint.user.loginMobileNo);
-//        NSString *telNo = [holeInOneUserPoint.user.loginMobileNo stringByReplacingCharactersInRange:NSMakeRange(3, 4) withString:@"****"];
-//        self.userNameLabel.text = telNo;
-//        
-//        NSString *pointStr = [NSString stringWithFormat:@"%d 分",holeInOneUserPoint.pointCount];
-//        int start = (int)[pointStr rangeOfString:[NSString stringWithFormat:@"%d",holeInOneUserPoint.pointCount]].location;
-//        int length = (int)[pointStr rangeOfString:[NSString stringWithFormat:@"%d",holeInOneUserPoint.pointCount]].length;
-//        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:pointStr];
-//        [attributedText addAttribute:NSForegroundColorAttributeName value:[ColorUtils colorWithHexString:orange_common_color] range:NSMakeRange(start,length)];
-//        
-//        self.pointLabel.attributedText = attributedText;
-
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
