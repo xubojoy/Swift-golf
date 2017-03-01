@@ -12,14 +12,16 @@ import HandyJSON
 import SDCycleScrollView
 import DynamicColor
 import FNMatchPull
+import MJRefresh
+
 class HoleInOneController: BaseViewController {
     var bannerImgArray: [String] = [String]()
     var cycleScrollView = SDCycleScrollView()
     var holeInOneUserPoint = HoleInOneUserPoint()
-    
     var holeInOneCategoryView = HoleInOneCategoryView()
     var holeInOneUserPointArray: [HoleInOneUserPoint] = [HoleInOneUserPoint]()
-    
+    // 底部加载
+//   let footer = MJRefreshAutoNormalFooter()
     
     lazy var tableView: UITableView = { [unowned self] in
        let table = UITableView(frame: CGRect(x:0,y:(20),width:screen_width,height:(screen_height-49-20)), style: .plain)
@@ -47,21 +49,39 @@ class HoleInOneController: BaseViewController {
         matchAnimator.text = "FNOZ"
         matchAnimator.lineWidth = 4.0
         matchAnimator.style = .text
-        self.tableView.addPullToRefreshWithAction({
-            //refresh action
-            OperationQueue().addOperation {
-                sleep(4)
-                OperationQueue.main.addOperation {
-                    self.tableView.stopPullToRefresh()
-                }
-            }
-        }, withAnimator: matchAnimator)
+//        self.tableView.addPullToRefreshWithAction({
+//            //refresh action
+//            OperationQueue().addOperation {
+//                sleep(4)
+//                OperationQueue.main.addOperation {
+//                    self.tableView.stopPullToRefresh()
+//                }
+//            }
+//        }, withAnimator: matchAnimator)
+        
+        
+//        //上刷新相关设置
+//        footer.setRefreshingTarget(self, refreshingAction: #selector(HoleInOneController.footerLoad))
+//        self.tableView.mj_footer = footer
+        
+        
+        self.tableView.mj_header = MJRefreshNormalHeader.init(refreshingTarget: self, refreshingAction: #selector(HoleInOneController.headerRereshing))
+        
+        self.tableView.mj_footer = MJRefreshAutoNormalFooter.init(refreshingTarget: self, refreshingAction: #selector(HoleInOneController.footerRereshing))
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     
+    }
+    
+    func headerRereshing() {
+        
+    }
+    
+    func footerRereshing() {
+        
     }
     
 
@@ -150,6 +170,7 @@ extension HoleInOneController: UITableViewDelegate,UITableViewDataSource {
         }else if indexPath.row == 2 {
             let cell = UITableViewCell()
             cell.backgroundColor = DynamicColor(hexString: common_bg_color)
+            cell.selectionStyle = .none
             let rankMarkView = RankMarkView(frame: CGRect(x: 0, y: general_padding, width: screen_width, height: 40))
 //            rankMarkView.backgroundColor = DynamicColor(hexString: green_light_color)
             cell.contentView.addSubview(rankMarkView)
@@ -158,6 +179,7 @@ extension HoleInOneController: UITableViewDelegate,UITableViewDataSource {
         }
         else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "commonHoleRankCell", for: indexPath) as? CommonHoleRankCell
+            cell?.selectionStyle = .none
             cell?.backgroundColor = DynamicColor(hexString: common_bg_color)
             self.holeInOneUserPoint = self.holeInOneUserPointArray[indexPath.row-3]
             cell?.renderCommonHoleRankCell(holeInOneUserPoint: self.holeInOneUserPoint, row: indexPath.row)
