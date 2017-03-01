@@ -16,5 +16,6 @@ target 'Swift-golf' do
     pod 'SDCycleScrollView','~> 1.64'
     pod 'MJExtension'
     pod 'FNMatchPull', '~> 0.2.1'
+    pod 'MJRefresh', '~> 3.1.12'
 end
 
