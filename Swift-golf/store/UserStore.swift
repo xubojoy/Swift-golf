@@ -21,32 +21,12 @@ class UserStore: NSObject {
         return Static.instance!
     }
     
-    
-    func userLogin(_ pwd:String!,mobileNo:NSString! ,completionBlock:(_ user:User, _ err:NSError?) -> Void){
-        
-//        let parameters:Dictionary? = ["pwd":pwd,"name":mobileNo]
-
-        
-//        HttpRequestFacade.sharedInstance.httpSendPostParametersRequest("http://test.golfd.cn/api/userSessions", parameters: parameters) { (json, err) -> Void in
-//            print(json)
-////            var dict = json as! NSDictionary
-//    
-////            completionBlock(dict: dict, err: nil)
-//        }
+    func userLogin(pwd: String,mobileNo:String,_ finished:@escaping (_ result: AnyObject?, _ error: NSError?)->()) {
+        let parameters:Dictionary? = ["pwd":pwd,"name":mobileNo]
+        let url:String = "http://test.golfd.cn/api/userSessions"
+        HttpRequestFacade.sharedInstance.requestData(methodType: .POST, urlString: url, parameters: parameters as [String : AnyObject]?) { (result, error) in
+            LXFLog(result)
+            finished(result, error)
+        }
     }
-    
-//    func createNewUserWithCompletion(gender:Int!, name:String!,mobileNo:String! ,completionBlock:(user:User, err:NSError?) -> Void){
-//        var parameters = [
-//            "name":name,
-//            "mobileNo":mobileNo,
-//            "gender":String(format: "\(gender)")
-//        ]
-//        println(parameters)
-//        HttpRequestFacade.sharedInstance.httpSendPostParametersRequest("http://test.golfd.cn/api/customers", parameters: parameters) { (json, err) -> Void in
-//            println(json)
-////            var dict = json as! NSDictionary
-//            //completionBlock(dict: dict, err: nil)
-//        }
-//    }
-    
 }

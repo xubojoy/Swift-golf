@@ -14,10 +14,10 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'F25303CF7781936754DAE0457F3370E6'
-               BlueprintName = 'RAMAnimatedTabBarController'
+               BlueprintIdentifier = '52ACA0236F086E72B74F0A090A743D41'
+               BlueprintName = 'Moya'
                ReferencedContainer = 'container:Pods.xcodeproj'
-               BuildableName = 'RAMAnimatedTabBarController.framework'>
+               BuildableName = 'Moya.framework'>
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

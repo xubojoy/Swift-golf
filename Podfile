@@ -17,5 +17,6 @@ target 'Swift-golf' do
     pod 'MJExtension'
     pod 'FNMatchPull', '~> 0.2.1'
     pod 'MJRefresh', '~> 3.1.12'
+    pod 'Moya', '~> 8.0.2'
 end
 

@@ -33,17 +33,6 @@ class HttpRequestFacade: NSObject {
         }
         return Static.sharedInstance
     }
-
-  
-//    func httpSendGetRequest(_ urlStr:String,useCacheIfNetworkFail:Bool, callBack:(_ json:AnyObject?, _ err:NSError?) -> Void){
-//        print("请求的URL:-----\(urlStr)")
-////        let uaStr = "golf_ios,8.4;iPhone Simulator,375*667;golf,1.2.1;62385D0A-6D8D-4366-9B3E-2E4A1C952087;unknow"
-//    }
-//
-//    func httpSendPostParametersRequest(_ urlStr:String!,parameters:NSDictionary!, callBack:(_ json:AnyObject?, _ err:NSError?) -> Void){
-//        print("请求的URL:-----\(urlStr)")
-////        var uaStr = "golf_ios,8.4;iPhone Simulator,375*667;golf,1.2.1;62385D0A-6D8D-4366-9B3E-2E4A1C952087;NDI6MDIyRDFGOTZBNzREMjNGQTQ5OURDNzBFMDIyNjAxMDE="
-//    }
 }
 
 // MARK:- 封装请求方法
@@ -59,11 +48,9 @@ extension HttpRequestFacade {
                 finished(nil, response.result.error as NSError?)
             }
         }
-        
-//        print(AppStatus.sharedInstance.ua())
         // 2.请求数据
         let httpMethod: HTTPMethod = methodType == .GET ? .get : .post
-        let httpHeader: HTTPHeaders = ["User-Agent" : ""]
+        let httpHeader: HTTPHeaders = ["User-Agent" : AppStatus().ua()]
         
         request(urlString, method: httpMethod, parameters: parameters, encoding: URLEncoding.default, headers: httpHeader).responseJSON(completionHandler: resultCallBack)
     }

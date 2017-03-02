@@ -19,7 +19,14 @@ class NewsViewController: BaseViewController {
         
         self.headerView.initHeader("新闻", navigationController: self.navigationController!)
         self.headerView.backBtn.isHidden = true
+//        loginData()
+    }
     
+    func loginData() {
+        UserStore.sharedInstance.userLogin(pwd: "111111", mobileNo: "18810734506") { (result, err) in
+            print(result ?? "")
+        }
+       
     }
     
     override func didReceiveMemoryWarning() {
